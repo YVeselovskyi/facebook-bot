@@ -1,0 +1,22 @@
+{
+  "name": "facebook-bot",
+  "version": "1.0.0",
+  "description": "Vinnytsia Hotline",
+  "main": "app.js",
+  "scripts": {
+    "test": "start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YVeselovskyi/facebook-bot.git"
+  },
+  "author": "Yaroslav Veselovskyi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YVeselovskyi/facebook-bot/issues"
+  },
+  "homepage": "https://github.com/YVeselovskyi/facebook-bot#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
