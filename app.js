@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json())
 
 app.get('/' , (req,res) => {
   res.send('Main!');
@@ -20,6 +23,7 @@ app.get('/webhook', (req, res) => {
 
 app.post('/webhook', function (req, res) {
   var data = req.body;
+  console.log(data);
   // Make sure this is a page subscription
   if (data.object == 'page') {
     // Iterate over each entry
