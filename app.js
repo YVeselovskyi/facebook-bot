@@ -7,9 +7,16 @@ app.get('/' , (req,res) => {
 })
 
 
-app.get('/hello' , (req,res) => {
-  res.send('Hello!');
-})
+app.get('/webhook', (req, res) => {
+  if (req.query['hub.mode'] === 'subscribe' &&
+      req.query['hub.verify_token'] === 'DynamoKyiv') {
+    console.log("Validating webhook");
+    res.status(200).send(req.query['hub.challenge']);
+  } else {
+    console.error("Failed validation. Make sure the validation tokens match.");
+    res.sendStatus(403);
+  }
+});
 
 app.listen(port, () => {
     console.log('Listening on port ' + port);
