@@ -31,33 +31,26 @@ app.post('/webhook', function(req, res) {
 
     // Make sure this is a page subscription
     if (data.object == 'page') {
-        console.log(data.entry[0].messaging);
+        messagingEvents = data.entry[0].messaging;
+
+        for (i = 0; i < messagingEvents.length; i++) {
+            event = data.entry[0].messaging[i];
+            var senderID = event.senderID.id;
+            allSenders[senderID] = true;
+
+            if (event.message && event.message.text) {
+                var text = event.message.text;
+                Object.keys(allSenders).forEach(function(recipientID) {
+                    sendTextMessage(senderID, text)
+                });
+            };
+
+
+        }
         res.sendStatus(200);
     }
 });
 
-
-function receivedMessage(event) {
-    var senderID = event.sender.id;
-    var recipientID = event.recipient.id;
-    var timeOfMessage = event.timestamp;
-    var message = event.message;
-    var messageId = message.mid;
-
-    // You may get a text or attachment but not both
-    var messageText = message.text;
-    var messageAttachments = message.attachments;
-
-    allSenders[senderID] = true;
-
-    if (message && messageText) {
-        Object.keys(allSenders).forEach(function(recipientID) {
-            sendTextMessage(recipientID, messageText)
-        });
-        console.log(allSenders);
-    };
-
-}
 
 function sendTextMessage(recipientId, messageText) {
     var messageData = {
@@ -90,8 +83,6 @@ function callSendAPI(messageData) {
             //   messageId, recipientId);
         } else {
             console.error("Unable to send message.");
-            // console.error(response);
-            // console.error(error);
         }
     });
 }
