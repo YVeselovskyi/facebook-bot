@@ -31,22 +31,7 @@ app.post('/webhook', function(req, res) {
 
     // Make sure this is a page subscription
     if (data.object == 'page') {
-        // Iterate over each entry
-        // There may be multiple if batched
-        data.entry.forEach(function(pageEntry) {
-            var pageID = pageEntry.id;
-            var timeOfEvent = pageEntry.time;
-            // Iterate over each messaging event
-            pageEntry.messaging.forEach(function(messagingEvent) {
-                if (messagingEvent.optin) {
-                    receivedAuthentication(messagingEvent);
-                } else if (messagingEvent.message) {
-                    receivedMessage(messagingEvent);
-                } else {
-                    console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-                }
-            });
-        });
+        console.log(data.entry[0].messaging);
         res.sendStatus(200);
     }
 });
@@ -57,7 +42,6 @@ function receivedMessage(event) {
     var recipientID = event.recipient.id;
     var timeOfMessage = event.timestamp;
     var message = event.message;
-
     var messageId = message.mid;
 
     // You may get a text or attachment but not both
@@ -66,12 +50,12 @@ function receivedMessage(event) {
 
     allSenders[senderID] = true;
 
-    // if (message && messageText) {
-    //     Object.keys(allSenders).forEach(function(senderID) {
-    //         sendTextMessage(senderID, messageText)
-    //     });
-    //     console.log(allSenders);
-    // };
+    if (message && messageText) {
+        Object.keys(allSenders).forEach(function(recipientID) {
+            sendTextMessage(recipientID, messageText)
+        });
+        console.log(allSenders);
+    };
 
 }
 
