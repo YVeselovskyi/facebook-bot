@@ -24,6 +24,8 @@ app.get('/webhook', (req, res) => {
   }
 });
 
+var allSenders = {};
+
 app.post('/webhook', function (req, res) {
   var data = req.body;
 
@@ -34,12 +36,10 @@ app.post('/webhook', function (req, res) {
     data.entry.forEach(function(pageEntry) {
       var pageID = pageEntry.id;
       var timeOfEvent = pageEntry.time;
-      console.log(pageEntry);
       // Iterate over each messaging event
       pageEntry.messaging.forEach(function(messagingEvent) {
         if (messagingEvent.optin) {
           receivedAuthentication(messagingEvent);
-          console.log(messagingEvent);
         } else if (messagingEvent.message) {
           receivedMessage(messagingEvent);
         } else {
@@ -57,6 +57,18 @@ function receivedMessage(event) {
   var recipientID = event.recipient.id;
   var timeOfMessage = event.timestamp;
   var message = event.message;
+
+  var messageId = message.mid;
+
+  // You may get a text or attachment but not both
+  var messageText = message.text;
+  var messageAttachments = message.attachments;
+
+  allSenders[senderID] = true;
+
+  Object.keys(allSenders).forEach(function(senderID) {
+      sendTextMessage(senderID, messageText)
+  });
 
   console.log("Received message for user %d and page %d at %d with message:",
     senderID, recipientID, timeOfMessage);
