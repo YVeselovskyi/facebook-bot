@@ -64,11 +64,13 @@ function receivedMessage(event) {
   var messageText = message.text;
   var messageAttachments = message.attachments;
 
-  // allSenders[senderID] = true;
-  //
-  // Object.keys(allSenders).forEach(function(senderID) {
-  //     sendTextMessage(senderID, messageText)
-  // });
+  allSenders[senderID] = true;
+
+  Object.keys(allSenders).forEach(function(senderID) {
+      sendTextMessage(senderID, messageText)
+  });
+
+  console.log(allSenders);
   // console.log(allSenders);
   // console.log("Received message for user %d and page %d at %d with message:",
   //   senderID, recipientID, timeOfMessage);
@@ -102,8 +104,8 @@ function receivedMessage(event) {
         sendReceiptMessage(senderID);
         break;
 
-      default:
-        sendTextMessage(senderID, messageText);
+      // default:
+      //   sendTextMessage(senderID, messageText);
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
