@@ -41,6 +41,7 @@ app.post('/webhook', function (req, res) {
         if (messagingEvent.optin) {
           receivedAuthentication(messagingEvent);
         } else if (messagingEvent.message) {
+          console.log('MESSAGING EVENT');
           receivedMessage(messagingEvent);
         } else {
           console.log("Webhook received unknown messagingEvent: ", messagingEvent);
