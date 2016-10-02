@@ -66,12 +66,12 @@ function receivedMessage(event) {
 
     allSenders[senderID] = true;
 
-    if (message && messageText) {
-        Object.keys(allSenders).forEach(function(senderID) {
-            sendTextMessage(senderID, messageText)
-        });
-        console.log(allSenders);
-    };
+    // if (message && messageText) {
+    //     Object.keys(allSenders).forEach(function(senderID) {
+    //         sendTextMessage(senderID, messageText)
+    //     });
+    //     console.log(allSenders);
+    // };
 
 }
 
