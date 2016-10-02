@@ -35,7 +35,7 @@ app.post('/webhook', function(req, res) {
 
         for (i = 0; i < messagingEvents.length; i++) {
             event = data.entry[0].messaging[i];
-            var senderID = event.senderID.id;
+            var senderID = event.sender.id;
             allSenders[senderID] = true;
 
             if (event.message && event.message.text) {
