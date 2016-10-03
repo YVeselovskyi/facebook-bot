@@ -10,79 +10,53 @@ const pageToken = 'EAAMy7RcgMngBAKuBeZBkeRocU4TbaBytzYU2Tx9xexoDQDfmR1XEdEayBPJX
 
 app.use(bodyParser.json())
 
-app.get('/', (req, res) => {
+app.get('/', function (req, res){
     res.send('Main!');
-})
+});
 
-app.get('/webhook', (req, res) => {
-    if (req.query['hub.mode'] === 'subscribe' &&
-        req.query['hub.verify_token'] === 'DynamoKyiv') {
-        // console.log("Validating webhook");
-        res.status(200).send(req.query['hub.challenge']);
+app.get('/webhook', function (req, res) {
+    if (req.query['hub.verify_token'] === 'DynamoKyiv') {
+        res.send(req.query['hub.challenge']);
     } else {
-        // console.error("Failed validation. Make sure the validation tokens match.");
-        res.sendStatus(403);
+        res.send('Invalid verify token');
     }
 });
 
 
-app.post('/webhook', function(req, res) {
-    var data = req.body;
-    messagingEvents = data.entry[0].messaging;
-
-    for (i = 0; i < messagingEvents.length; i++) {
-        event = data.entry[0].messaging[i];
-        var senderID = event.sender.id;
-        console.log(senderID , event);
+// handler receiving messages
+app.post('/webhook', function (req, res) {
+    var events = req.body.entry[0].messaging;
+    for (i = 0; i < events.length; i++) {
+        var event = events[i];
         if (event.message && event.message.text) {
-            var text = event.message.text;
-            sendTextMessage(senderID, 'Привет, список доступных команд есть в меню :)')
-        } else if (event.postback.payload == 'cinema') {
-            cinema.getFilms()
-                .then((result) => {
-                    result.forEach(function(i) { sendTextMessage(senderID, i) });
-                })
-                .catch(err => console.log(err));
-        };
+            if (!kittenMessage(event.sender.id, event.message.text)) {
+                sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
+            }
+        } else if (event.postback) {
+            console.log("Postback received: " + JSON.stringify(event.postback));
+        }
     }
     res.sendStatus(200);
 });
 
-
-function sendTextMessage(recipientId, messageText) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            text: messageText
-        }
-    };
-
-    callSendAPI(messageData);
-}
-
-function callSendAPI(messageData) {
+// generic function sending messages
+function sendMessage(recipientId, message) {
     request({
-        uri: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {
-            access_token: pageToken
-        },
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',
-        json: messageData
-
+        json: {
+            recipient: {id: recipientId},
+            message: message,
+        }
     }, function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var recipientId = body.recipient_id;
-            var messageId = body.message_id;
-
-            // console.log("Successfully sent generic message with id %s to recipient %s",
-            //   messageId, recipientId);
-        } else {
-            console.error("Unable to send message.");
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
         }
     });
-}
+};
 
 
 app.listen(port, () => {
