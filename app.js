@@ -32,10 +32,10 @@ app.post('/webhook', (req, res) => {
         let event = events[i];
         if (event.message && event.message.text) {
             if (event.sender.id && event.message.text) {
-                sendMessage(event.sender.id, { text: "Echo: " + event.message.text });
+                sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
             }
         } else if (event.postback) {
-            sendInfo(event.sender.id, event.postback.payload);
+            sendInfo(event.sender.id , event.postback.payload);
         }
     }
     res.sendStatus(200);
@@ -45,10 +45,10 @@ app.post('/webhook', (req, res) => {
 const sendMessage = (recipientId, message) => {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: pageToken },
+        qs: {access_token: pageToken},
         method: 'POST',
         json: {
-            recipient: { id: recipientId },
+            recipient: {id: recipientId},
             message: message,
         }
     }, (error, response, body) => {
@@ -61,16 +61,8 @@ const sendMessage = (recipientId, message) => {
 };
 
 
-let fbMessage = {
-    cinema: cinema.getFilms()
-        .then((result) => {
-            result.forEach((i) => sendMessage(recipientId, { text: "Echo: " + i }))
-        })
-        .catch(err => console.log(err))
-}
-
-const sendInfo = (recipientId, postback) => {
-    fbMessage.cinema(recipientId);
+let sendInfo = (recipientId, postback) => {
+    sendMessage(recipientId, {text: "Type: " + postback});
 };
 
 app.listen(port, () => {
