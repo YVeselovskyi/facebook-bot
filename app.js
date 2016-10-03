@@ -41,7 +41,7 @@ app.post('/webhook', function(req, res) {
                 var text = event.message.text;
                 if (text) {
                     sendTextMessage(senderID, 'Привет, вот список доступных команд :)')
-                } else if (event.postback.payload) {
+                } else if (event.postback) {
                     // cinema.getFilms()
                     //     .then((result) => {
                     //         result.forEach(function(i) { sendTextMessage(senderID, i) });
