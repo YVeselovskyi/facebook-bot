@@ -48,7 +48,7 @@ app.post('/webhook', function(req, res) {
                     if (text == 'Кино') {
                         cinema.getFilms()
                             .then((result) => {
-                                sendTextMessage(senderID, result);
+                                sendTextMessage(senderID, result[0]);
                             })
                             .catch(err => console.log(err));
                     } else {
