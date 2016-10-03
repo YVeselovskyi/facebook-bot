@@ -33,7 +33,7 @@ app.post('/webhook', function (req, res) {
                 sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
             }
         } else if (event.postback) {
-            sendMessage(event.sender.id, {text: "Echo: " + event.postback.payload});
+            sendInfo(event.postback.payload);
         }
     }
     res.sendStatus(200);
@@ -58,6 +58,10 @@ function sendMessage(recipientId, message) {
     });
 };
 
+
+function sendInfo(postback){
+    console.log(postback);
+}
 
 app.listen(port, () => {
     console.log('Listening on port ' + port);
