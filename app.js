@@ -28,29 +28,24 @@ app.get('/webhook', (req, res) => {
 
 app.post('/webhook', function(req, res) {
     var data = req.body;
+    messagingEvents = data.entry[0].messaging;
 
-    // Make sure this is a page subscription
-    if (data.object == 'page') {
-        messagingEvents = data.entry[0].messaging;
+    for (i = 0; i < messagingEvents.length; i++) {
+        event = data.entry[0].messaging[i];
+        var senderID = event.sender.id;
 
-        for (i = 0; i < messagingEvents.length; i++) {
-            event = data.entry[0].messaging[i];
-            var senderID = event.sender.id;
-
-            if (event.message && event.message.text) {
-                var text = event.message.text;
-                sendTextMessage(senderID, 'Привет, список доступных команд есть в меню :)')
-            };
-            if (event.postback.payload == 'cinema') {
-                cinema.getFilms()
-                    .then((result) => {
-                        result.forEach(function(i) { sendTextMessage(senderID, i) });
-                    })
-                    .catch(err => console.log(err));
-            };
-        }
-        res.sendStatus(200);
+        if (event.message && event.message.text) {
+            var text = event.message.text;
+            sendTextMessage(senderID, 'Привет, список доступных команд есть в меню :)')
+        } else if (event.postback.payload == 'cinema') {
+            cinema.getFilms()
+                .then((result) => {
+                    result.forEach(function(i) { sendTextMessage(senderID, i) });
+                })
+                .catch(err => console.log(err));
+        };
     }
+    res.sendStatus(200);
 });
 
 
