@@ -38,10 +38,6 @@ let fbMessage = {
             })
             .catch(err => console.log(err))
     },
-    theatreEvents(recipientId) {
-        sendTheatreImage();
-    }
-
 };
 
 // handler receiving messages
@@ -113,14 +109,12 @@ const sendTheatreImage = (recipientId, message) => {
     });
 };
 
-
 let sendInfo = (recipientId, postback) => {
     if (postback == 'cinema') {
         fbMessage.allFilms(recipientId);
     } else if (postback == 'theatre') {
-        fbMessage.theatreEvents(recipientId);
+        sendTheatreImage(recipientId);
     }
-
 };
 
 app.listen(port, () => {
