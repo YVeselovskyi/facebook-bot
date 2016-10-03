@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const request = require('request');
 const cinema = require('./cinema');
-const cinema = require('./theatre');
+const theatre = require('./theatre');
 
 
 const pageToken = 'EAAMy7RcgMngBAKuBeZBkeRocU4TbaBytzYU2Tx9xexoDQDfmR1XEdEayBPJXkrNZCIDOQ5Cmv4ctClNzrWNjSbmTHzBY4q6ZAbIed6kh61oaKKUT9v10LA8QBr5taJZAdh6tX6qPNfLV6i4YES1MVYR4TapcxOdNd9adrV2aHAZDZD';
@@ -37,18 +37,18 @@ let fbMessage = {
                 }
             })
             .catch(err => console.log(err))
-    },
-    theatreEvents(recipientId) {
-        theatre.getEvents()
-            .then((result) => {
-                for (let n in result) {
-                    sendMessage(recipientId, {
-                        text: `${n}: ${result[n]}`
-                    });
-                }
-            })
-            .catch(err => console.log(err))
     }
+    // theatreEvents(recipientId) {
+    //     theatre.getEvents()
+    //         .then((result) => {
+    //             for (let n in result) {
+    //                 sendMessage(recipientId, {
+    //                     text: `${n}: ${result[n]}`
+    //                 });
+    //             }
+    //         })
+    //         .catch(err => console.log(err))
+    // }
 };
 
 // handler receiving messages
