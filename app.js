@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+
 const bodyParser = require('body-parser');
 const request = require('request');
+const cinema = require('./cinema');
+
 
 const pageToken = 'EAAMy7RcgMngBAKuBeZBkeRocU4TbaBytzYU2Tx9xexoDQDfmR1XEdEayBPJXkrNZCIDOQ5Cmv4ctClNzrWNjSbmTHzBY4q6ZAbIed6kh61oaKKUT9v10LA8QBr5taJZAdh6tX6qPNfLV6i4YES1MVYR4TapcxOdNd9adrV2aHAZDZD';
 
@@ -12,6 +15,7 @@ app.get('/', (req, res) => {
     res.send('Main!');
 })
 
+const commands = ['Кино'];
 
 app.get('/webhook', (req, res) => {
     if (req.query['hub.mode'] === 'subscribe' &&
@@ -24,7 +28,6 @@ app.get('/webhook', (req, res) => {
     }
 });
 
-// var allSenders = {};
 
 app.post('/webhook', function(req, res) {
     var data = req.body;
@@ -36,12 +39,17 @@ app.post('/webhook', function(req, res) {
         for (i = 0; i < messagingEvents.length; i++) {
             event = data.entry[0].messaging[i];
             var senderID = event.sender.id;
-            // allSenders[senderID] = true;
 
             if (event.message && event.message.text) {
                 var text = event.message.text;
                 if (text) {
-                    sendTextMessage(senderID, 'Привет, вот список доступных команд')
+                    sendTextMessage(senderID, 'Привет, вот список доступных команд :)')
+                } else if (text == 'Кино') {
+                    cinema.getFilms()
+                        .then((result) => {
+                            sendTextMessage(senderID, result);
+                        })
+                        .catch(err => console.log(err));
                 }
 
             };

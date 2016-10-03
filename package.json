@@ -1,24 +1,25 @@
 {
-  "name": "facebook-bot",
-  "version": "1.0.0",
-  "description": "Vinnytsia Hotline",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/YVeselovskyi/facebook-bot.git"
-  },
-  "author": "Yaroslav Veselovskyi",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/YVeselovskyi/facebook-bot/issues"
-  },
-  "homepage": "https://github.com/YVeselovskyi/facebook-bot#readme",
-  "dependencies": {
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0",
-    "request": "^2.75.0"
-  }
+    "name": "facebook-bot",
+    "version": "1.0.0",
+    "description": "Vinnytsia Hotline",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/YVeselovskyi/facebook-bot.git"
+    },
+    "author": "Yaroslav Veselovskyi",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/YVeselovskyi/facebook-bot/issues"
+    },
+    "homepage": "https://github.com/YVeselovskyi/facebook-bot#readme",
+    "dependencies": {
+        "body-parser": "^1.15.2",
+        "cheerio": "^0.22.0",
+        "express": "^4.14.0",
+        "request": "^2.75.0"
+    }
 }
