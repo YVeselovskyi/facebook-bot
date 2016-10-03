@@ -41,12 +41,13 @@ app.post('/webhook', function(req, res) {
                 var text = event.message.text;
                 if (text) {
                     sendTextMessage(senderID, 'Привет, вот список доступных команд :)')
-                } else if (event.postback.payload == 'cinema') {
-                    cinema.getFilms()
-                        .then((result) => {
-                            result.forEach(function(i) { sendTextMessage(senderID, i) });
-                        })
-                        .catch(err => console.log(err));
+                } else if (event.postback.payload) {
+                    // cinema.getFilms()
+                    //     .then((result) => {
+                    //         result.forEach(function(i) { sendTextMessage(senderID, i) });
+                    //     })
+                    //     .catch(err => console.log(err));
+                    console.log(event.postback);
                 }
 
             };
