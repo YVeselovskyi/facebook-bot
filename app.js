@@ -106,7 +106,7 @@ const sendImage = (recipientId, message) => {
                 attachment: {
                     type: 'image',
                     payload: {
-                        url: 'https://petersapparel.com/img/shirt.png'
+                        url: 'https://pp.vk.me/c637922/v637922167/13940/EKWTqUcJusc.jpg'
                     }
                 }
             }
