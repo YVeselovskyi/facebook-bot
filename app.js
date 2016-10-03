@@ -38,17 +38,10 @@ let fbMessage = {
             })
             .catch(err => console.log(err))
     }
-    // theatreEvents(recipientId) {
-    //     theatre.getEvents()
-    //         .then((result) => {
-    //             for (let n in result) {
-    //                 sendMessage(recipientId, {
-    //                     text: `${n}: ${result[n]}`
-    //                 });
-    //             }
-    //         })
-    //         .catch(err => console.log(err))
-    // }
+    theatreEvents(recipientId) {
+        sendTheatreImage();
+    }
+
 };
 
 // handler receiving messages
@@ -58,7 +51,7 @@ app.post('/webhook', (req, res) => {
         let event = events[i];
         if (event.message && event.message.text) {
             if (event.sender.id && event.message.text) {
-                sendImage(event.sender.id, {
+                sendMessage(event.sender.id, {
                     text: "Добрый день! Список команд есть в меню слева :)"
                 });
             }
@@ -91,7 +84,7 @@ const sendMessage = (recipientId, message) => {
     });
 };
 
-const sendImage = (recipientId, message) => {
+const sendTheatreImage = (recipientId, message) => {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {
@@ -103,6 +96,7 @@ const sendImage = (recipientId, message) => {
                 id: recipientId
             },
             message: {
+                text: 'Афиша театра им. Садовского :)',
                 attachment: {
                     type: 'image',
                     payload: {
