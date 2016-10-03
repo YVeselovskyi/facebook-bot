@@ -64,7 +64,7 @@ const sendMessage = (recipientId, message) => {
 let fbMessage = {
     cinema: cinema.getFilms()
         .then((result) => {
-            result.forEach( (i) => { sendMessage(recipientId, { text: i }) });
+            console.log(result);
         })
         .catch(err => console.log(err))
 }
