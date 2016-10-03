@@ -36,23 +36,18 @@ app.post('/webhook', function(req, res) {
         for (i = 0; i < messagingEvents.length; i++) {
             event = data.entry[0].messaging[i];
             var senderID = event.sender.id;
-            console.log(event.postback);
+
             if (event.message && event.message.text) {
                 var text = event.message.text;
-                if (text) {
-                    sendTextMessage(senderID, 'Привет, вот список доступных команд :)')
-                } else if (event.postback) {
-                    // cinema.getFilms()
-                    //     .then((result) => {
-                    //         result.forEach(function(i) { sendTextMessage(senderID, i) });
-                    //     })
-                    //     .catch(err => console.log(err));
-                    //console.log(event.postback);
-                }
-
+                sendTextMessage(senderID, 'Привет, список доступных команд есть в меню :)')
             };
-
-
+            if (event.postback.payload == 'cinema') {
+                cinema.getFilms()
+                    .then((result) => {
+                        result.forEach(function(i) { sendTextMessage(senderID, i) });
+                    })
+                    .catch(err => console.log(err));
+            };
         }
         res.sendStatus(200);
     }
