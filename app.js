@@ -37,7 +37,7 @@ let fbMessage = {
                 }
             })
             .catch(err => console.log(err))
-    }
+    },
     theatreEvents(recipientId) {
         sendTheatreImage();
     }
