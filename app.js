@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
-
 const bodyParser = require('body-parser');
 const request = require('request');
 const cinema = require('./cinema');
@@ -48,7 +47,7 @@ app.post('/webhook', function(req, res) {
                     if (text == 'Кино') {
                         cinema.getFilms()
                             .then((result) => {
-                                sendTextMessage(senderID, result[0]);
+                                result.forEach(function(i) { sendTextMessage(senderID, i) });
                             })
                             .catch(err => console.log(err));
                     } else {
