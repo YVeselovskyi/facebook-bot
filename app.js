@@ -24,7 +24,7 @@ app.get('/webhook', (req, res) => {
     }
 });
 
-var allSenders = {};
+// var allSenders = {};
 
 app.post('/webhook', function(req, res) {
     var data = req.body;
@@ -36,13 +36,14 @@ app.post('/webhook', function(req, res) {
         for (i = 0; i < messagingEvents.length; i++) {
             event = data.entry[0].messaging[i];
             var senderID = event.sender.id;
-            allSenders[senderID] = true;
+            // allSenders[senderID] = true;
 
             if (event.message && event.message.text) {
                 var text = event.message.text;
-                Object.keys(allSenders).forEach(function(recipientID) {
-                    sendTextMessage(senderID, text)
-                });
+                if (text) {
+                    sendTextMessage(senderID, 'Привет, вот список доступных команд')
+                }
+
             };
 
 
