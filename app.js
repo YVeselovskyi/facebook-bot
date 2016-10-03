@@ -14,8 +14,6 @@ app.get('/', (req, res) => {
     res.send('Main!');
 })
 
-const commands = ['Кино'];
-
 app.get('/webhook', (req, res) => {
     if (req.query['hub.mode'] === 'subscribe' &&
         req.query['hub.verify_token'] === 'DynamoKyiv') {
@@ -42,17 +40,13 @@ app.post('/webhook', function(req, res) {
             if (event.message && event.message.text) {
                 var text = event.message.text;
                 if (text) {
-
-
-                    if (text == 'Кино') {
-                        cinema.getFilms()
-                            .then((result) => {
-                                result.forEach(function(i) { sendTextMessage(senderID, i) });
-                            })
-                            .catch(err => console.log(err));
-                    } else {
-                        sendTextMessage(senderID, 'Привет, вот список доступных команд :)')
-                    }
+                    sendTextMessage(senderID, 'Привет, вот список доступных команд :)')
+                } else if (event.postback.payload == 'cinema') {
+                    cinema.getFilms()
+                        .then((result) => {
+                            result.forEach(function(i) { sendTextMessage(senderID, i) });
+                        })
+                        .catch(err => console.log(err));
                 }
 
             };
