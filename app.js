@@ -96,7 +96,6 @@ const sendTheatreImage = (recipientId, message) => {
                 id: recipientId
             },
             message: {
-                text: 'Афиша театра им. Садовского :)',
                 attachment: {
                     type: 'image',
                     payload: {
