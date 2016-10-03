@@ -43,13 +43,17 @@ app.post('/webhook', function(req, res) {
             if (event.message && event.message.text) {
                 var text = event.message.text;
                 if (text) {
-                    sendTextMessage(senderID, 'Привет, вот список доступных команд :)')
-                } else if (text == 'Кино') {
-                    cinema.getFilms()
-                        .then((result) => {
-                            sendTextMessage(senderID, result);
-                        })
-                        .catch(err => console.log(err));
+
+
+                    if (text == 'Кино') {
+                        cinema.getFilms()
+                            .then((result) => {
+                                sendTextMessage(senderID, result);
+                            })
+                            .catch(err => console.log(err));
+                    } else {
+                        sendTextMessage(senderID, 'Привет, вот список доступных команд :)')
+                    }
                 }
 
             };
