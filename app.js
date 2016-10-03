@@ -64,13 +64,13 @@ const sendMessage = (recipientId, message) => {
 let fbMessage = {
     cinema: cinema.getFilms()
         .then((result) => {
-            result.forEach(function(i) { sendTextMessage(senderID, i) });
+            result.forEach( (i) => { sendMessage(recipientId, { text: i }) });
         })
         .catch(err => console.log(err))
 }
 
 const sendInfo = (recipientId, postback) => {
-    sendMessage(recipientId, { text: fbMessage.cinema });
+    fbMessage.cinema(recipientId);
 };
 
 app.listen(port, () => {
