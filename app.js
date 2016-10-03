@@ -6,6 +6,7 @@ const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const request = require('request');
 const cinema = require('./cinema');
+const cinema = require('./theatre');
 
 
 const pageToken = 'EAAMy7RcgMngBAKuBeZBkeRocU4TbaBytzYU2Tx9xexoDQDfmR1XEdEayBPJXkrNZCIDOQ5Cmv4ctClNzrWNjSbmTHzBY4q6ZAbIed6kh61oaKKUT9v10LA8QBr5taJZAdh6tX6qPNfLV6i4YES1MVYR4TapcxOdNd9adrV2aHAZDZD';
@@ -29,13 +30,25 @@ let fbMessage = {
     allFilms(recipientId) {
         cinema.getFilms()
             .then((result) => {
-                for(let n in result){
-                    sendMessage(recipientId, { text: `${n}: ${result[n]}` });
+                for (let n in result) {
+                    sendMessage(recipientId, {
+                        text: `${n}: ${result[n]}`
+                    });
+                }
+            })
+            .catch(err => console.log(err))
+    },
+    theatreEvents(recipientId) {
+        theatre.getEvents()
+            .then((result) => {
+                for (let n in result) {
+                    sendMessage(recipientId, {
+                        text: `${n}: ${result[n]}`
+                    });
                 }
             })
             .catch(err => console.log(err))
     }
-
 };
 
 // handler receiving messages
@@ -45,7 +58,9 @@ app.post('/webhook', (req, res) => {
         let event = events[i];
         if (event.message && event.message.text) {
             if (event.sender.id && event.message.text) {
-                sendMessage(event.sender.id, { text: "Echo: " + event.message.text });
+                sendImage(event.sender.id, {
+                    text: "Добрый день! Список команд есть в меню слева :)"
+                });
             }
         } else if (event.postback) {
             sendInfo(event.sender.id, event.postback.payload);
@@ -54,16 +69,47 @@ app.post('/webhook', (req, res) => {
     res.sendStatus(200);
 });
 
-
-
 const sendMessage = (recipientId, message) => {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: pageToken },
+        qs: {
+            access_token: pageToken
+        },
         method: 'POST',
         json: {
-            recipient: { id: recipientId },
+            recipient: {
+                id: recipientId
+            },
             message: message,
+        }
+    }, (error, response, body) => {
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+    });
+};
+
+const sendImage = (recipientId, message) => {
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {
+            access_token: pageToken
+        },
+        method: 'POST',
+        json: {
+            recipient: {
+                id: recipientId
+            },
+            message: {
+                attachment: {
+                    type: 'image',
+                    payload: {
+                        url: 'https://petersapparel.com/img/shirt.png'
+                    }
+                }
+            }
         }
     }, (error, response, body) => {
         if (error) {
@@ -76,7 +122,12 @@ const sendMessage = (recipientId, message) => {
 
 
 let sendInfo = (recipientId, postback) => {
-    fbMessage.allFilms(recipientId);
+    if (postback == 'cinema') {
+        fbMessage.allFilms(recipientId);
+    } else if (postback == 'theatre') {
+        fbMessage.theatreEvents(recipientId);
+    }
+
 };
 
 app.listen(port, () => {
