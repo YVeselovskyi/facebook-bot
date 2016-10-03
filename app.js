@@ -25,6 +25,14 @@ app.get('/webhook', (req, res) => {
 });
 
 
+let fbMessage = {
+    allFilms: cinema.getFilms(id)
+        .then((result) => {
+            result.forEach((i) => sendMessage(id, { text: "Echo: " + i }))
+        })
+        .catch(err => console.log(err))
+};
+
 // handler receiving messages
 app.post('/webhook', (req, res) => {
     let events = req.body.entry[0].messaging;
@@ -62,7 +70,7 @@ const sendMessage = (recipientId, message) => {
 
 
 let sendInfo = (recipientId, postback) => {
-    sendMessage(recipientId, {text: "Type: " + postback});
+    fbMessage.allFilms(recipientId);
 };
 
 app.listen(port, () => {
