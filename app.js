@@ -60,7 +60,7 @@ function sendMessage(recipientId, message) {
 
 
 function sendInfo(recipientId, postback){
-    sendMessage(recipientId, 'test');
+    sendMessage(recipientId, {text: "Type: " + postback});
 };
 
 app.listen(port, () => {
