@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 
 const url = 'http://kinoafisha.ua/cinema/vinnica/smartcinema';
 
-let getFilms = () => {
+const getFilms = () => {
 
     return new Promise((resolve, reject) => {
 
@@ -11,9 +11,9 @@ let getFilms = () => {
             if (error) {
                 reject(error);
             } else {
-                let $ = cheerio.load(body);
+                var $ = cheerio.load(body);
 
-                let films = [];
+                var films = [];
 
                 $('.cinema-room a b').each(function(index) {
                     films.push($(this).text());
