@@ -1,3 +1,5 @@
+'use strict';
+
 const request = require('request');
 const cheerio = require('cheerio');
 
@@ -11,9 +13,9 @@ const getFilms = () => {
             if (error) {
                 reject(error);
             } else {
-                var $ = cheerio.load(body);
+                let $ = cheerio.load(body);
 
-                var films = [];
+                let films = [];
 
                 $('.cinema-room a b').each(function(index) {
                     films.push($(this).text());
