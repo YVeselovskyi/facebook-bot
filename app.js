@@ -30,7 +30,7 @@ let fbMessage = {
         cinema.getFilms()
             .then((result) => {
                 for(let n in result){
-                    sendMessage(recipientId, { text: "Echo: " + n }))
+                    sendMessage(recipientId, { text: `${n}: ${result[n]}` });
                 }
             })
             .catch(err => console.log(err))
