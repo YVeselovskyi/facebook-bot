@@ -3,7 +3,7 @@
 const request = require('request');
 const cheerio = require('cheerio');
 
-const url = 'http://kinoafisha.ua/cinema/vinnica/smartcinema';
+const url = 'https://www.goldmir.net/ru/kino/cinema-shows/257_smartcinema';
 
 const getFilms = () => {
 
@@ -15,10 +15,10 @@ const getFilms = () => {
             } else {
                 let $ = cheerio.load(body);
 
-                let films = [];
+                let films = {};
 
-                $('.cinema-room a b').each(function(index) {
-                    films.push($(this).text());
+                $('.kino_shows').each(function(i) {
+                    films[`${$(this).find('.name').text()}`] = `${$(this).find('.shows').text()}`;
                 });
 
                 resolve(films);
@@ -30,3 +30,9 @@ const getFilms = () => {
 module.exports = {
     getFilms: getFilms
 }
+
+getFilms()
+    .then((result) => {
+        console.log(result);
+    })
+    .catch(err => console.log(err));

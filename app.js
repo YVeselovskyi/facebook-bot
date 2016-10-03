@@ -52,7 +52,8 @@ app.post('/webhook', (req, res) => {
     res.sendStatus(200);
 });
 
-// generic function sending messages
+
+
 const sendMessage = (recipientId, message) => {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
