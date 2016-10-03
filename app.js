@@ -33,7 +33,7 @@ app.post('/webhook', function(req, res) {
     for (i = 0; i < messagingEvents.length; i++) {
         event = data.entry[0].messaging[i];
         var senderID = event.sender.id;
-
+        console.log(senderID , event);
         if (event.message && event.message.text) {
             var text = event.message.text;
             sendTextMessage(senderID, 'Привет, список доступных команд есть в меню :)')
