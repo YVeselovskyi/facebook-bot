@@ -31,7 +31,7 @@ let fbMessage = {
             .then((result) => {
                 for (let n in result) {
                     sendMessage(recipientId, {
-                        text: `${n} \n ${result[n]}`
+                        text: `${n}: ${result[n]}`
                     });
                 }
             })
@@ -42,7 +42,7 @@ let fbMessage = {
             .then((result) => {
                 for (let n in result) {
                     sendMessage(recipientId, {
-                        text: `${n}: ${result[n]}`
+                        text: `${n} \n ${result[n]}`
                     });
                 }
             })
