@@ -21,7 +21,8 @@ const getConcerts = () => {
                     let name = $(this).find('.event_title').text().trim();
                     let date = $(this).find('.box-date strong em').text();
                     let month = $(this).find('.box-date span').text();
-                    concerts[name] = `${date} ${month}`;
+                    let place = $(this).find('.block-time a').text();
+                    concerts[name] = `${date} ${month} ${place}`;
                 });
 
                 resolve(concerts);
