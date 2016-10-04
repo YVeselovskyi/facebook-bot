@@ -6,8 +6,7 @@ const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const request = require('request');
 const cinema = require('./cinema');
-const theatre = require('./theatre');
-
+const concerts = require('./concerts');
 
 const pageToken = 'EAAMy7RcgMngBAKuBeZBkeRocU4TbaBytzYU2Tx9xexoDQDfmR1XEdEayBPJXkrNZCIDOQ5Cmv4ctClNzrWNjSbmTHzBY4q6ZAbIed6kh61oaKKUT9v10LA8QBr5taJZAdh6tX6qPNfLV6i4YES1MVYR4TapcxOdNd9adrV2aHAZDZD';
 
@@ -38,6 +37,17 @@ let fbMessage = {
             })
             .catch(err => console.log(err))
     },
+    allConcerts(recipientId) {
+        concerts.getConcerts()
+            .then((result) => {
+                for (let n in result) {
+                    sendMessage(recipientId, {
+                        text: `${n}: ${result[n]}`
+                    });
+                }
+            })
+            .catch(err => console.log(err))
+    }
 };
 
 // handler receiving messages
@@ -114,6 +124,8 @@ let sendInfo = (recipientId, postback) => {
         fbMessage.allFilms(recipientId);
     } else if (postback == 'theatre') {
         sendTheatreImage(recipientId);
+    } else if (postback == 'concerts') {
+        fbMessage.allConcerts(recipientId);
     }
 };
 
