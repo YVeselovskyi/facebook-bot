@@ -19,7 +19,7 @@ const getFilms = () => {
 
                 $('.kino_shows').each(function(i) {
 
-                    let time = `🎬 ${$(this).find('.shows .new').text()}`;
+                    let time = $(this).find('.shows .new').text();
                     let name = $(this).find('.name').text();
                     let timeFilter = (str) => {
                         if(str){
