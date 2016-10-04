@@ -1,6 +1,6 @@
 const EventEmitter = require('events');
-const test = require('./event-test');
+const emit = require('./emit');
 
-test.myEmitter.on('timeout-event', () => {
+emit.myEmitter.on('query executed', () => {
   console.log('an event occurred from another file!');
 });

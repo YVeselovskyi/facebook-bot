@@ -18,11 +18,11 @@ const getConcerts = () => {
                 let concerts = {};
 
                 $('.block-mini').each(function(i) {
-                    let name = $(this).find('.event_title').text();
-                    concerts[name] = true;
+                    let name = $(this).find('.event_title').text().trim();
+                    let date = $(this).find('.box-date strong em').text();
+                    let month = $(this).find('.box-date span').text();
+                    concerts[name] = `${date} ${month}`;
                 });
-
-
 
                 resolve(concerts);
             }
@@ -33,9 +33,3 @@ const getConcerts = () => {
 module.exports = {
     getConcerts: getConcerts
 };
-
-getConcerts()
-    .then((result) => {
-        console.log(result);
-    })
-    .catch(err => console.log(err))
