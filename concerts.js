@@ -18,7 +18,7 @@ const getConcerts = () => {
                 let concerts = {};
 
                 $('.block-mini').each(function(i) {
-                    let name = $(this).find('.event_title').text().trim();
+                    let name = `💈 ${$(this).find('.event_title').text().trim()}`;
                     let date = $(this).find('.box-date strong em').text();
                     let month = $(this).find('.box-date span').text();
                     let place = $(this).find('.block-time a').text();
@@ -31,7 +31,7 @@ const getConcerts = () => {
                     } else if (place == 'Академічний музи...') {
                         place = 'Театр им. Садовского'
                     }
-                    concerts[name] = `💡 Дата: ${date} ${month} 🏡 Место: ${place} ❔ Цены: ${price}`;
+                    concerts[name] = `💡 Дата ${date} ${month} 🏡 Место ${place} ❔ Цены ${price}`;
                 });
 
                 resolve(concerts);
