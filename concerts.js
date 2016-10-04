@@ -22,7 +22,16 @@ const getConcerts = () => {
                     let date = $(this).find('.box-date strong em').text();
                     let month = $(this).find('.box-date span').text();
                     let place = $(this).find('.block-time a').text();
-                    concerts[name] = `${date} ${month} ${place}`;
+                    let price = $(this).find('.block-price strong').text();
+
+                    if (place == 'Дом офицеров (Ви...') {
+                        place = 'Дом офицеров Винница';
+                    } else if (place == 'Вінницька обласн...') {
+                        place = 'Винницкая филармония';
+                    } else if (place == 'Академічний музи...') {
+                        place = 'Театр им. Садовского'
+                    }
+                    concerts[name] = `Дата: ${date} ${month} Место: ${place} Цены: ${price}`;
                 });
 
                 resolve(concerts);
