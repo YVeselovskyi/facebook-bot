@@ -31,7 +31,7 @@ const getConcerts = () => {
                     } else if (place == 'Академічний музи...') {
                         place = 'Театр им. Садовского'
                     }
-                    concerts[name] = `💢 Дата: ${date} ${month} 💢 Место: ${place} 💢 Цены: ${price}`;
+                    concerts[name] = `💡 Дата: ${date} ${month} 🏡 Место: ${place} ❔ Цены: ${price}`;
                 });
 
                 resolve(concerts);
