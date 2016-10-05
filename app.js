@@ -107,13 +107,13 @@ app.post('/webhook/', function(req, res) {
 
 function generateInfo(senderId, payloadType) {
     if (payloadType == 'news') {
-        fbMessage.getRandomNewsItem(event.sender.id);
+        fbMessage.getRandomNewsItem(senderId);
     } else if (payloadType == 'cinema') {
-        fbMessage.getAllFilms(event.sender.id);
+        fbMessage.getAllFilms(senderId);
     } else if (payloadType == 'theatre') {
-        sendTheatreImage(event.sender.id);
+        sendTheatreImage(senderId);
     } else if (payloadType == 'concerts') {
-        fbMessage.getAllConcerts(event.sender.id);
+        fbMessage.getAllConcerts(senderId);
     };
 };
 
