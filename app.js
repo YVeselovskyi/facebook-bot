@@ -96,9 +96,9 @@ app.post('/webhook/', function(req, res) {
             let text = event.message.text
             sendTextMessage(sender, 'Добрый день! Список доступных команд есть в меню :)');
         }
-        if (event.postback.payload == 'cinema') {
+        if (event.postback) {
             let text = JSON.stringify(event.postback)
-            fbMessage.getAllFilms(event.sender.id);
+            sendTextMessage(sender, "Postback received: " + text.substring(0, 200))
             continue
         }
     }
