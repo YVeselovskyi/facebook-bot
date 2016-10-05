@@ -29,7 +29,7 @@ app.get('/webhook', (req, res) => {
 //Object with methods which are executing functions from another modules
 
 const fbMessage = {
-    allFilms(recipientId) {
+    getAllFilms(recipientId) {
         cinema.getFilms()
             .then((result) => {
                 for (let n in result) {
@@ -40,7 +40,7 @@ const fbMessage = {
             })
             .catch(err => console.log(err))
     },
-    allConcerts(recipientId) {
+    getAllConcerts(recipientId) {
         concerts.getConcerts()
             .then((result) => {
                 for (let n in result) {
@@ -62,12 +62,11 @@ app.post('/webhook', (req, res) => {
             //if user sends a text message
             if (event.sender.id && event.message.text) {
                 sendNews(event.sender.id, {
-                    text: "Добрый день! Список команд есть в меню слева :)"
+                    attachment.payload.elements[0].title: "Добрый день! Список команд есть в меню слева :)"
                 });
             }
             // if user sends postback
         } else if (event.postback) {
-            console.log(event.postback.payload);
             sendInfo(event.sender.id, event.postback.payload);
         }
     }
@@ -147,7 +146,7 @@ const sendNews = (recipientId, message) => {
                     payload: {
                         template_type: 'generic',
                         elements: [{
-                            title: 'Welcome to Peter\'s Hats',
+                            title: 'lols',
                             item_url: 'https://petersfancybrownhats.com',
                             image_url: 'https://petersfancybrownhats.com/company_image.png',
                             subtitle: 'We\'ve got the right hat for everyone.',
@@ -175,11 +174,13 @@ const sendNews = (recipientId, message) => {
 
 let sendInfo = (recipientId, postback) => {
     if (postback == 'cinema') {
-        fbMessage.allFilms(recipientId);
+        fbMessage.getAllFilms(recipientId);
     } else if (postback == 'theatre') {
         sendTheatreImage(recipientId);
     } else if (postback == 'concerts') {
-        fbMessage.allConcerts(recipientId);
+        fbMessage.getAllConcerts(recipientId);
+    } else if (postback == 'news') {
+        fbMessage.getNewsItem(recipientId);
     }
 };
 
