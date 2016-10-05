@@ -62,23 +62,6 @@ const fbMessage = {
 };
 
 // Handler receiving messages
-// app.post('/webhook', (req, res) => {
-//     let events = req.body.entry[0].messaging;
-//     console.log(req.body.entry[0]);
-//     for (let i = 0; i < events.length; i++) {
-//         let event = events[i];
-//         if (event.message && event.message.text) {
-//             //if user sends a text message
-//             if (event.sender.id && event.message.text) {
-//                 sendMessage(event.sender.id, {
-//                     text: "Добрый день! Список команд есть в меню слева :)"
-//                 });
-//             }
-
-//     }
-//     res.sendStatus(200);
-// });
-
 app.post('/webhook', (req, res) => {
     let events = req.body.entry[0].messaging;
     for (let i = 0; i < events.length; i++) {
@@ -153,9 +136,15 @@ const sendTheatreImage = (recipientId, message) => {
     });
 };
 
+const randomInteger = (min, max) => {
+  let rand = min + Math.random() * (max - min)
+  rand = Math.round(rand);
+  return rand;
+}
 
 const sendNews = (recipientId, newsArray) => {
-    let randomNumber =
+    let randomNumber = randomInteger(0, newsArray.length )
+    
         request({
             url: 'https://graph.facebook.com/v2.6/me/messages',
             qs: {
@@ -172,13 +161,13 @@ const sendNews = (recipientId, newsArray) => {
                         payload: {
                             template_type: 'generic',
                             elements: [{
-                                title: newsArray[0].title,
-                                item_url: 'https://petersfancybrownhats.com',
-                                image_url: 'https://petersfancybrownhats.com/company_image.png',
-                                subtitle: 'We\'ve got the right hat for everyone.',
+                                title: newsArray[randomNumber].title,
+                                item_url: newsArray[randomNumber].siteUrl,
+                                image_url: newsArray[randomNumber].imageUrl,
+                                subtitle: newsArray[randomNumber].subTitle,
                                 buttons: [{
                                     type: 'web_url',
-                                    url: 'https://vk.com',
+                                    url: newsArray[randomNumber].siteUrl,
                                     title: 'Прочитать новость'
                                 }]
                             }]
