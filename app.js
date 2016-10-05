@@ -52,7 +52,7 @@ const fbMessage = {
             })
             .catch(err => console.log(err))
     },
-    getRandomNewsItem() {
+    getRandomNewsItem(recipientId) {
         news.getNews()
             .then((result) => {
                 sendNews(recipientId, result);
