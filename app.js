@@ -50,6 +50,13 @@ const fbMessage = {
                 }
             })
             .catch(err => console.log(err))
+    },
+    getRandomNewsItem() {
+        news.getNews()
+            .then((result) => {
+                sendNews(recipientId, result);
+            })
+            .catch(err => console.log(err))
     }
 };
 
@@ -64,7 +71,7 @@ app.post('/webhook', (req, res) => {
             });
             // if user sends postback
         } else if (event.postback.payload == 'news') {
-            sendNews(event.sender.id, 'Test News');
+            fbMessage.getRandomNewsItem(event.sender.id);
         } else if (event.postback.payload == 'cinema') {
             fbMessage.getAllFilms(event.sender.id);
         } else if (event.postback.payload == 'theatre') {
@@ -132,7 +139,7 @@ const sendTheatreImage = (recipientId, message) => {
 };
 
 
-const sendNews = (recipientId, recipientTitle) => {
+const sendNews = (recipientId, newsArray) => {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {
@@ -149,14 +156,14 @@ const sendNews = (recipientId, recipientTitle) => {
                     payload: {
                         template_type: 'generic',
                         elements: [{
-                            title: recipientTitle,
+                            title: newsArray[0].title,
                             item_url: 'https://petersfancybrownhats.com',
                             image_url: 'https://petersfancybrownhats.com/company_image.png',
                             subtitle: 'We\'ve got the right hat for everyone.',
                             buttons: [{
                                 type: 'web_url',
                                 url: 'https://vk.com',
-                                title: 'View Website'
+                                title: 'Прочитать новость'
                             }]
                         }]
                     }
