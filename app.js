@@ -98,11 +98,11 @@ app.post('/webhook/', function(req, res) {
                 sendGenericMessage(sender)
                 continue
             }
-            sendMessage(sender, "Text received, echo: " + text.substring(0, 200))
+            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
         if (event.postback) {
             let text = JSON.stringify(event.postback)
-            sendMessage(sender, "Postback received: " + text.substring(0, 200), token)
+            sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token)
             continue
         }
     }
@@ -147,6 +147,25 @@ function sendGenericMessage(sender) {
         method: 'POST',
         json: {
             recipient: { id: sender },
+            message: messageData,
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+    })
+}
+
+function sendTextMessage(sender, text) {
+    let messageData = { text:text }
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {access_token:pageToken},
+        method: 'POST',
+        json: {
+            recipient: {id:sender},
             message: messageData,
         }
     }, function(error, response, body) {
