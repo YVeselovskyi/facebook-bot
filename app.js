@@ -61,9 +61,13 @@ app.post('/webhook', (req, res) => {
         if (event.message && event.message.text) {
             //if user sends a text message
             if (event.sender.id && event.message.text) {
-                sendNews(event.sender.id, 'LOLS');
+                sendMessage(event.sender.id, {
+                    text: "Добрый день! Список команд есть в меню слева :)"
+                });
             }
             // if user sends postback
+        } else if (event.postback == 'news') {
+            sendNews(event.sender.id, 'Test News');
         } else if (event.postback) {
             sendInfo(event.sender.id, event.postback.payload);
         }
