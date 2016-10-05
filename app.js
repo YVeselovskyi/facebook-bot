@@ -87,21 +87,80 @@ const fbMessage = {
 //     res.sendStatus(200);
 // });
 
-app.post('/webhook', function(req, res) {
-    let events = req.body.entry[0].messaging;
-    for (let i = 0; i < events.length; i++) {
-        let event = events[i];
-            console.log(event.message);
+app.post('/webhook/', function(req, res) {
+    let messaging_events = req.body.entry[0].messaging
+    for (let i = 0; i < messaging_events.length; i++) {
+        let event = req.body.entry[0].messaging[i]
+        let sender = event.sender.id
         if (event.message && event.message.text) {
-            sendMessage(event.sender.id, { text: "Echo: " + event.message.text });
+            let text = event.message.text
+            if (text === 'Generic') {
+                sendGenericMessage(sender)
+                continue
+            }
+            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+        }
+        if (event.postback) {
+            let text = JSON.stringify(event.postback)
+            sendTextMessage(sender, "Postback received: " + text.substring(0, 200), token)
+            continue
         }
     }
-    res.sendStatus(200);
-});
+    res.sendStatus(200)
+})
+
+function sendGenericMessage(sender) {
+    let messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [{
+                    "title": "First card",
+                    "subtitle": "Element #1 of an hscroll",
+                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+                    "buttons": [{
+                        "type": "web_url",
+                        "url": "https://www.messenger.com",
+                        "title": "web url"
+                    }, {
+                        "type": "postback",
+                        "title": "Postback",
+                        "payload": "Payload for first element in a generic bubble",
+                    }],
+                }, {
+                    "title": "Second card",
+                    "subtitle": "Element #2 of an hscroll",
+                    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+                    "buttons": [{
+                        "type": "postback",
+                        "title": "Postback",
+                        "payload": "Payload for second element in a generic bubble",
+                    }],
+                }]
+            }
+        }
+    }
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: { access_token: token },
+        method: 'POST',
+        json: {
+            recipient: { id: sender },
+            message: messageData,
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+    })
+}
 
 
 // Function to send simple text message
-const sendMessage = (recipientId, message) => {
+function sendMessage(recipientId, message){
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {
@@ -114,7 +173,7 @@ const sendMessage = (recipientId, message) => {
             },
             message: message,
         }
-    }, (error, response, body) => {
+    }, function(error, response, body){
         if (error) {
             console.log('Error sending message: ', error);
         } else if (response.body.error) {
@@ -124,7 +183,7 @@ const sendMessage = (recipientId, message) => {
 };
 
 //Function to send image message 
-const sendTheatreImage = (recipientId, message) => {
+function sendTheatreImage(recipientId, message){
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {
@@ -145,7 +204,7 @@ const sendTheatreImage = (recipientId, message) => {
                 }
             }
         }
-    }, (error, response, body) => {
+    }, function(error, response, body){
         if (error) {
             console.log('Error sending message: ', error);
         } else if (response.body.error) {
@@ -155,7 +214,7 @@ const sendTheatreImage = (recipientId, message) => {
 };
 
 
-const sendNews = (recipientId, newsArray) => {
+function sendNews(recipientId, newsArray){
     let randomNumber =
         request({
             url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -187,7 +246,7 @@ const sendNews = (recipientId, newsArray) => {
                     }
                 }
             }
-        }, (error, response, body) => {
+        }, function(error, response, body){
             if (error) {
                 console.log('Error sending message: ', error);
             } else if (response.body.error) {
@@ -196,6 +255,6 @@ const sendNews = (recipientId, newsArray) => {
         });
 }
 
-app.listen(port, () => {
+app.listen(port, function(){
     console.log('Listening on port ' + port);
 });
