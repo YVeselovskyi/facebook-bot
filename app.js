@@ -142,7 +142,7 @@ const sendNews = (recipientId, message) => {
             },
             message: {
                 attachment: {
-                    type: template,
+                    type: 'template',
                     payload: {
                         template_type: 'generic',
                         elements: [{
