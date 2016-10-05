@@ -52,7 +52,7 @@ const fbMessage = {
             })
             .catch(err => console.log(err))
     },
-    getRandomNewsItem(recipientId) {
+    getRandomNewsItem() {
         news.getNews()
             .then((result) => {
                 sendNews(recipientId, result);
@@ -62,23 +62,42 @@ const fbMessage = {
 };
 
 // Handler receiving messages
+// app.post('/webhook', (req, res) => {
+//     let events = req.body.entry[0].messaging;
+//     for (let i = 0; i < events.length; i++) {
+//         let event = events[i];
+//         if (event.message && event.message.text) {
+//             sendMessage(event.sender.id, {
+//                 text: "Добрый день! Список команд есть в меню слева :)"
+//             });
+//             // if user sends postback
+//         } else if (event.postback.payload == 'news') {
+//             fbMessage.getRandomNewsItem(event.sender.id);
+//         } else if (event.postback.payload == 'cinema') {
+//             fbMessage.getAllFilms(event.sender.id);
+//         } else if (event.postback.payload == 'theatre') {
+//             sendTheatreImage(event.sender.id);
+//         } else {
+//             fbMessage.getAllConcerts(event.sender.id);
+//         }
+//     }
+//     res.sendStatus(200);
+// });
+
 app.post('/webhook', (req, res) => {
     let events = req.body.entry[0].messaging;
     for (let i = 0; i < events.length; i++) {
         let event = events[i];
         if (event.message && event.message.text) {
-            sendMessage(event.sender.id, {
-                text: "Добрый день! Список команд есть в меню слева :)"
-            });
+            //if user sends a text message
+            if (event.sender.id && event.message.text) {
+                sendNews(event.sender.id, {
+                    text: "Добрый день! Список команд есть в меню слева :)"
+                });
+            }
             // if user sends postback
-        } else if (event.postback.payload == 'news') {
-            fbMessage.getRandomNewsItem(event.sender.id);
-        } else if (event.postback.payload == 'cinema') {
-            fbMessage.getAllFilms(event.sender.id);
-        } else if (event.postback.payload == 'theatre') {
-            sendTheatreImage(event.sender.id);
-        } else {
-            fbMessage.getAllConcerts(event.sender.id);
+        } else if (event.postback) {
+            sendInfo(event.sender.id, event.postback.payload);
         }
     }
     res.sendStatus(200);
