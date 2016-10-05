@@ -7,7 +7,7 @@ const url = 'https://www.goldmir.net/ru/kino/cinema-shows/257_smartcinema';
 
 //Function to get info about films from given url
 
-const getFilms = () => {
+function getFilms() {
 
     return new Promise((resolve, reject) => {
 
@@ -24,10 +24,10 @@ const getFilms = () => {
                     let time = $(this).find('.shows .new').text();
                     let name = `🎬 ${$(this).find('.name').text()}`;
                     let timeFilter = (str) => {
-                        if(str){
-                          return str.replace( /3D/g, '' ).replace( /2D/g, '' ).match(/.{1,5}/g).toString();
+                        if (str) {
+                            return str.replace(/3D/g, '').replace(/2D/g, '').match(/.{1,5}/g).toString();
                         } else {
-                          return 'Сегодня сеансов больше нет :('
+                            return 'Сегодня сеансов больше нет :('
                         }
                     };
                     films[name] = timeFilter(time);

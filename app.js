@@ -17,6 +17,14 @@ app.get('/', (req, res) => {
     res.send('Main!');
 });
 
+//Random int function 
+
+function randomInteger(min, max) {
+    var rand = min + Math.random() * (max - min)
+    rand = Math.round(rand);
+    return rand;
+}
+
 
 // Checking if token matches with fb token
 app.get('/webhook', (req, res) => {
@@ -57,31 +65,6 @@ const fbMessage = {
     }
 };
 
-// Handler receiving messages
-// app.post('/webhook', (req, res) => {
-//     let events = req.body.entry[0].messaging;
-//     console.log(req.body.entry[0]);
-//     for (let i = 0; i < events.length; i++) {
-//         let event = events[i];
-//         if (event.message && event.message.text) {
-//             //if user sends a text message
-//             if (event.sender.id && event.message.text) {
-//                 sendMessage(event.sender.id, {
-//                     text: "Добрый день! Список команд есть в меню слева :)"
-//                 });
-//             }
-//         } else if (event.postback.payload == 'news') {
-//             fbMessage.getRandomNewsItem(event.sender.id);
-//         } else if (event.postback.payload == 'cinema') {
-//             fbMessage.getAllFilms(event.sender.id);
-//         } else if (event.postback.payload == 'theatre') {
-//             sendTheatreImage(event.sender.id);
-//         } else if (event.postback.payload == 'concerts') {
-//             fbMessage.getAllConcerts(event.sender.id);
-//         };
-//     }
-//     res.sendStatus(200);
-// });
 
 app.post('/webhook/', function(req, res) {
     let messaging_events = req.body.entry[0].messaging
@@ -167,7 +150,7 @@ function sendTheatreImage(recipientId, message) {
 
 
 function sendNews(recipientId, newsArray) {
-    let randomNumber =
+    let randomNumber = randomInteger(0, newsArray.length - 1);
         request({
             url: 'https://graph.facebook.com/v2.6/me/messages',
             qs: {
@@ -184,13 +167,13 @@ function sendNews(recipientId, newsArray) {
                         payload: {
                             template_type: 'generic',
                             elements: [{
-                                title: newsArray[0].title,
-                                item_url: 'https://petersfancybrownhats.com',
-                                image_url: 'https://petersfancybrownhats.com/company_image.png',
-                                subtitle: 'We\'ve got the right hat for everyone.',
+                                title: newsArray[randomNumber].title,
+                                item_url: newsArray[randomNumber].url,
+                                image_url: newsArray[randomNumber].image,
+                                subtitle: newsArray[randomNumber].subtitle,
                                 buttons: [{
                                     type: 'web_url',
-                                    url: 'https://vk.com',
+                                    url: newsArray[randomNumber].url,
                                     title: 'Прочитать новость'
                                 }]
                             }]

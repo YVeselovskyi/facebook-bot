@@ -7,7 +7,7 @@ const url = 'http://www.dialog.ua/tag/55/';
 
 //Function to get info about concerts from given url
 
-const getNews = () => {
+function getNews() {
 
     return new Promise((resolve, reject) => {
 

@@ -7,7 +7,7 @@ const url = 'https://vinnitsa.karabas.com/concerts/';
 
 //Function to get info about concerts from given url
 
-const getConcerts = () => {
+function getConcerts() {
 
     return new Promise((resolve, reject) => {
 
