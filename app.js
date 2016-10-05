@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 //Random int function 
 
 function randomInteger(min, max) {
-    var rand = min + Math.random() * (max - min)
+    let rand = min + Math.random() * (max - min)
     rand = Math.round(rand);
     return rand;
 }
