@@ -61,7 +61,7 @@ app.post('/webhook', (req, res) => {
         if (event.message && event.message.text) {
             //if user sends a text message
             if (event.sender.id && event.message.text) {
-                sendMessage(event.sender.id, {
+                sendNews(event.sender.id, {
                     text: "Добрый день! Список команд есть в меню слева :)"
                 });
             }
@@ -127,6 +127,48 @@ const sendTheatreImage = (recipientId, message) => {
         }
     });
 };
+
+
+const sendNews = (recipientId, message) => {
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {
+            access_token: pageToken
+        },
+        method: 'POST',
+        json: {
+            "recipient": {
+                "id": recipientId
+            },
+            "message": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": "Welcome to Peter\'s Hats",
+                            "item_url": "https://petersfancybrownhats.com",
+                            "image_url": "https://petersfancybrownhats.com/company_image.png",
+                            "subtitle": "We\'ve got the right hat for everyone.",
+                            "buttons": [{
+                                "type": "web_url",
+                                "url": "https://petersfancybrownhats.com",
+                                "title": "View Website"
+                            }]
+                        }]
+                    }
+                }
+            }
+        }
+    }, (error, response, body) => {
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+    });
+}
+
 
 // Handler to detect what postback was received
 
