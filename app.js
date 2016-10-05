@@ -8,7 +8,7 @@ const request = require('request');
 const cinema = require('./cinema');
 const concerts = require('./concerts');
 
-const pageToken = 'EAAMy7RcgMngBAKuBeZBkeRocU4TbaBytzYU2Tx9xexoDQDfmR1XEdEayBPJXkrNZCIDOQ5Cmv4ctClNzrWNjSbmTHzBY4q6ZAbIed6kh61oaKKUT9v10LA8QBr5taJZAdh6tX6qPNfLV6i4YES1MVYR4TapcxOdNd9adrV2aHAZDZD';
+const pageToken = process.env.TOKEN;
 
 app.use(bodyParser.json())
 
@@ -16,6 +16,8 @@ app.get('/', (req, res) => {
     res.send('Main!');
 });
 
+
+// Checking if token matches with fb token
 app.get('/webhook', (req, res) => {
     if (req.query['hub.verify_token'] === 'DynamoKyiv') {
         res.send(req.query['hub.challenge']);
@@ -24,8 +26,9 @@ app.get('/webhook', (req, res) => {
     }
 });
 
+//Object with methods which are executing functions from another modules
 
-let fbMessage = {
+const fbMessage = {
     allFilms(recipientId) {
         cinema.getFilms()
             .then((result) => {
@@ -50,17 +53,19 @@ let fbMessage = {
     }
 };
 
-// handler receiving messages
+// Handler receiving messages
 app.post('/webhook', (req, res) => {
     let events = req.body.entry[0].messaging;
     for (let i = 0; i < events.length; i++) {
         let event = events[i];
         if (event.message && event.message.text) {
+            //if user sends a text message
             if (event.sender.id && event.message.text) {
                 sendMessage(event.sender.id, {
                     text: "Добрый день! Список команд есть в меню слева :)"
                 });
             }
+            // if user sends postback
         } else if (event.postback) {
             sendInfo(event.sender.id, event.postback.payload);
         }
@@ -68,6 +73,8 @@ app.post('/webhook', (req, res) => {
     res.sendStatus(200);
 });
 
+
+// Function to send simple text message
 const sendMessage = (recipientId, message) => {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -90,6 +97,7 @@ const sendMessage = (recipientId, message) => {
     });
 };
 
+//Function to send image message 
 const sendTheatreImage = (recipientId, message) => {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -105,6 +113,7 @@ const sendTheatreImage = (recipientId, message) => {
                 attachment: {
                     type: 'image',
                     payload: {
+                        // Image with theatre schedule for current month
                         url: 'https://pp.vk.me/c637922/v637922167/13940/EKWTqUcJusc.jpg'
                     }
                 }
@@ -118,6 +127,8 @@ const sendTheatreImage = (recipientId, message) => {
         }
     });
 };
+
+// Handler to detect what postback was received
 
 let sendInfo = (recipientId, postback) => {
     if (postback == 'cinema') {

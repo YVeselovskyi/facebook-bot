@@ -5,6 +5,8 @@ const cheerio = require('cheerio');
 
 const url = 'https://vinnitsa.karabas.com/concerts/';
 
+//Function to get info about concerts from given url
+
 const getConcerts = () => {
 
     return new Promise((resolve, reject) => {
@@ -18,6 +20,7 @@ const getConcerts = () => {
                 let concerts = {};
 
                 $('.block-mini').each(function(i) {
+
                     let name = `💈 ${$(this).find('.event_title').text().trim()}`;
                     let date = $(this).find('.box-date strong em').text();
                     let month = $(this).find('.box-date span').text();

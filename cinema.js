@@ -5,6 +5,8 @@ const cheerio = require('cheerio');
 
 const url = 'https://www.goldmir.net/ru/kino/cinema-shows/257_smartcinema';
 
+//Function to get info about films from given url
+
 const getFilms = () => {
 
     return new Promise((resolve, reject) => {
