@@ -66,22 +66,19 @@ app.post('/webhook', (req, res) => {
     let events = req.body.entry[0].messaging;
     for (let i = 0; i < events.length; i++) {
         let event = events[i];
-        if (event.message && event.message.text) {
-            //if user sends a text message
-            if (event.sender.id && event.message.text) {
-                sendMessage(event.sender.id, {
-                    text: "Добрый день! Список команд есть в меню слева :)"
-                });
-            }
-            // if user sends postback
-        } else if (event.postback.payload == 'news') {
+        // if user sends postback
+        if (event.postback.payload == 'news') {
             fbMessage.getRandomNewsItem(event.sender.id);
         } else if (event.postback.payload == 'cinema') {
             fbMessage.getAllFilms(event.sender.id);
         } else if (event.postback.payload == 'theatre') {
             sendTheatreImage(event.sender.id);
-        } else {
+        } else if (event.postback.payload == 'concerts'){
             fbMessage.getAllConcerts(event.sender.id);
+        } else {
+            sendMessage(event.sender.id, {
+                text: "Добрый день! Список команд есть в меню слева :)"
+            });
         }
     }
     res.sendStatus(200);
