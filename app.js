@@ -59,18 +59,18 @@ app.post('/webhook', (req, res) => {
     for (let i = 0; i < events.length; i++) {
         let event = events[i];
         if (event.message && event.message.text) {
-            //if user sends a text message
-            if (event.sender.id && event.message.text) {
-                sendMessage(event.sender.id, {
-                    text: "Добрый день! Список команд есть в меню слева :)"
-                });
+            sendMessage(event.sender.id, {
+                text: "Добрый день! Список команд есть в меню слева :)"
+            });
             // if user sends postback
-            } else if (event.postback.payload == 'news') {
-                sendNews(event.sender.id, 'Test News');
-            } else if (event.postback) {
-                sendInfo(event.sender.id, event.postback.payload);
-            }
-
+        } else if (event.postback.payload == 'news') {
+            sendNews(event.sender.id, 'Test News');
+        } else if (event.postback.payload == 'cinema') {
+            fbMessage.getAllFilms(event.sender.id);
+        } else if (event.postback.payload == 'theatre') {
+            sendTheatreImage(event.sender.id);
+        } else {
+            fbMessage.getAllConcerts(event.sender.id);
         }
     }
     res.sendStatus(200);
@@ -171,21 +171,6 @@ const sendNews = (recipientId, recipientTitle) => {
         }
     });
 }
-
-
-// Handler to detect what postback was received
-
-let sendInfo = (recipientId, postback) => {
-    if (postback == 'cinema') {
-        fbMessage.getAllFilms(recipientId);
-    } else if (postback == 'theatre') {
-        sendTheatreImage(recipientId);
-    } else if (postback == 'concerts') {
-        fbMessage.getAllConcerts(recipientId);
-    } else if (postback == 'news') {
-        fbMessage.getNewsItem(recipientId);
-    }
-};
 
 app.listen(port, () => {
     console.log('Listening on port ' + port);
