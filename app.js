@@ -89,9 +89,9 @@ const fbMessage = {
 
 app.post('/webhook', function(req, res) {
     let events = req.body.entry[0].messaging;
-    console.log(event.message);
     for (let i = 0; i < events.length; i++) {
         let event = events[i];
+            console.log(event.message);
         if (event.message && event.message.text) {
             sendMessage(event.sender.id, { text: "Echo: " + event.message.text });
         }
