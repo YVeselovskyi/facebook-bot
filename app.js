@@ -61,9 +61,7 @@ app.post('/webhook', (req, res) => {
         if (event.message && event.message.text) {
             //if user sends a text message
             if (event.sender.id && event.message.text) {
-                sendNews(event.sender.id, {
-                    attachment.payload.elements[0].title: "Добрый день! Список команд есть в меню слева :)"
-                });
+                sendNews(event.sender.id, 'LOLS');
             }
             // if user sends postback
         } else if (event.postback) {
@@ -129,7 +127,7 @@ const sendTheatreImage = (recipientId, message) => {
 };
 
 
-const sendNews = (recipientId, message) => {
+const sendNews = (recipientId, recipientTitle) => {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {
@@ -146,7 +144,7 @@ const sendNews = (recipientId, message) => {
                     payload: {
                         template_type: 'generic',
                         elements: [{
-                            title: 'lols',
+                            title: recipientTitle,
                             item_url: 'https://petersfancybrownhats.com',
                             image_url: 'https://petersfancybrownhats.com/company_image.png',
                             subtitle: 'We\'ve got the right hat for everyone.',
