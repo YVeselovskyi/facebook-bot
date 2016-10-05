@@ -8,7 +8,7 @@ const request = require('request');
 const cinema = require('./cinema');
 const concerts = require('./concerts');
 
-const pageToken = process.env.TOKEN;
+const pageToken = process.env.fbToken;
 
 app.use(bodyParser.json())
 
