@@ -64,7 +64,7 @@ const fbMessage = {
 // Handler receiving messages
 app.post('/webhook', (req, res) => {
     let events = req.body.entry[0].messaging;
-    console.log(req.body);
+    console.log(req.body.entry[0]);
     for (let i = 0; i < events.length; i++) {
         let event = events[i];
         if (event.message && event.message.text) {
