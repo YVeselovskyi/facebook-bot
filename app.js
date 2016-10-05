@@ -74,26 +74,26 @@ const fbMessage = {
 //                     text: "Добрый день! Список команд есть в меню слева :)"
 //                 });
 //             }
-//         } else if (event.postback.payload == 'news') {
-//             fbMessage.getRandomNewsItem(event.sender.id);
-//         } else if (event.postback.payload == 'cinema') {
-//             fbMessage.getAllFilms(event.sender.id);
-//         } else if (event.postback.payload == 'theatre') {
-//             sendTheatreImage(event.sender.id);
-//         } else if (event.postback.payload == 'concerts') {
-//             fbMessage.getAllConcerts(event.sender.id);
-//         };
+
 //     }
 //     res.sendStatus(200);
 // });
 
-app.post('/webhook', function (req, res) {
+app.post('/webhook', (req, res) => {
     let events = req.body.entry[0].messaging;
     for (let i = 0; i < events.length; i++) {
         let event = events[i];
         if (event.message && event.message.text) {
-            sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
-        }
+            sendMessage(event.sender.id, { text: "Добрый день! Список команд есть в меню слева :)" });
+        } else if (event.postback.payload == 'news') {
+            fbMessage.getRandomNewsItem(event.sender.id);
+        } else if (event.postback.payload == 'cinema') {
+            fbMessage.getAllFilms(event.sender.id);
+        } else if (event.postback.payload == 'theatre') {
+            sendTheatreImage(event.sender.id);
+        } else if (event.postback.payload == 'concerts') {
+            fbMessage.getAllConcerts(event.sender.id);
+        };
     }
     res.sendStatus(200);
 });
@@ -155,44 +155,44 @@ const sendTheatreImage = (recipientId, message) => {
 
 
 const sendNews = (recipientId, newsArray) => {
-    let randomNumber = 
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {
-            access_token: pageToken
-        },
-        method: 'POST',
-        json: {
-            recipient: {
-                id: recipientId
+    let randomNumber =
+        request({
+            url: 'https://graph.facebook.com/v2.6/me/messages',
+            qs: {
+                access_token: pageToken
             },
-            message: {
-                attachment: {
-                    type: 'template',
-                    payload: {
-                        template_type: 'generic',
-                        elements: [{
-                            title: newsArray[0].title,
-                            item_url: 'https://petersfancybrownhats.com',
-                            image_url: 'https://petersfancybrownhats.com/company_image.png',
-                            subtitle: 'We\'ve got the right hat for everyone.',
-                            buttons: [{
-                                type: 'web_url',
-                                url: 'https://vk.com',
-                                title: 'Прочитать новость'
+            method: 'POST',
+            json: {
+                recipient: {
+                    id: recipientId
+                },
+                message: {
+                    attachment: {
+                        type: 'template',
+                        payload: {
+                            template_type: 'generic',
+                            elements: [{
+                                title: newsArray[0].title,
+                                item_url: 'https://petersfancybrownhats.com',
+                                image_url: 'https://petersfancybrownhats.com/company_image.png',
+                                subtitle: 'We\'ve got the right hat for everyone.',
+                                buttons: [{
+                                    type: 'web_url',
+                                    url: 'https://vk.com',
+                                    title: 'Прочитать новость'
+                                }]
                             }]
-                        }]
+                        }
                     }
                 }
             }
-        }
-    }, (error, response, body) => {
-        if (error) {
-            console.log('Error sending message: ', error);
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
-        }
-    });
+        }, (error, response, body) => {
+            if (error) {
+                console.log('Error sending message: ', error);
+            } else if (response.body.error) {
+                console.log('Error: ', response.body.error);
+            }
+        });
 }
 
 app.listen(port, () => {
