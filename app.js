@@ -97,8 +97,8 @@ app.post('/webhook/', function(req, res) {
             sendTextMessage(sender, 'Добрый день! Список доступных команд есть в меню :)');
         }
         if (event.postback) {
-            let text = JSON.stringify(event.postback)
-            sendTextMessage(sender, "Postback received: " + text.substring(0, 200))
+            let payload = event.postback.payload;
+            sendTextMessage(sender, "Postback received: " + payload)
             continue
         }
     }
