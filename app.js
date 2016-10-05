@@ -78,7 +78,7 @@ app.post('/webhook/', function(req, res) {
         if (event.postback) {
             let payload = event.postback.payload;
             generateInfo(sender, payload)
-            continue
+            //continue
         }
     }
     res.sendStatus(200)
