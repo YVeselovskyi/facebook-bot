@@ -143,8 +143,8 @@ const randomInteger = (min, max) => {
 }
 
 const sendNews = (recipientId, newsArray) => {
-    let randomNumber = randomInteger(0, newsArray.length )
-    
+    let randomNumber = randomInteger(0, newsArray.length-1 )
+
         request({
             url: 'https://graph.facebook.com/v2.6/me/messages',
             qs: {
