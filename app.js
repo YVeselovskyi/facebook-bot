@@ -137,23 +137,23 @@ const sendNews = (recipientId, message) => {
         },
         method: 'POST',
         json: {
-            "recipient": {
-                "id": recipientId
+            recipient: {
+                id: recipientId
             },
-            "message": {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": "Welcome to Peter\'s Hats",
-                            "item_url": "https://petersfancybrownhats.com",
-                            "image_url": "https://petersfancybrownhats.com/company_image.png",
-                            "subtitle": "We\'ve got the right hat for everyone.",
-                            "buttons": [{
-                                "type": "web_url",
-                                "url": "https://petersfancybrownhats.com",
-                                "title": "View Website"
+            message: {
+                attachment: {
+                    type: template,
+                    payload: {
+                        template_type: 'generic',
+                        elements: [{
+                            title: 'Welcome to Peter\'s Hats',
+                            item_url: 'https://petersfancybrownhats.com',
+                            image_url: 'https://petersfancybrownhats.com/company_image.png',
+                            subtitle: 'We\'ve got the right hat for everyone.',
+                            buttons: [{
+                                type: 'web_url',
+                                url: 'https://vk.com',
+                                title: 'View Website'
                             }]
                         }]
                     }
