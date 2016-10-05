@@ -66,7 +66,7 @@ app.post('/webhook', (req, res) => {
                 });
             }
             // if user sends postback
-        } else if (event.postback == 'news') {
+        } else if (event.postback.payload == 'news') {
             sendNews(event.sender.id, 'Test News');
         } else if (event.postback) {
             sendInfo(event.sender.id, event.postback.payload);
