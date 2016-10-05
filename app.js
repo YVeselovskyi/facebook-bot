@@ -66,6 +66,11 @@ app.post('/webhook', (req, res) => {
     let events = req.body.entry[0].messaging;
     for (let i = 0; i < events.length; i++) {
         let event = events[i];
+        console.log(event);
+        console.log('|||||');
+        console.log(event.message);
+        console.log('?????');
+        console.log(event.message.text);
         if (event.message && event.message.text) {
             //if user sends a text message
             if (event.sender.id && event.message.text) {
