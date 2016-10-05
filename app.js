@@ -94,11 +94,11 @@ app.post('/webhook/', function(req, res) {
         let sender = event.sender.id
         if (event.message && event.message.text) {
             let text = event.message.text
-            sendTextMessage(sender, 'NU PRIVETIK');
+            sendTextMessage(sender, 'Добрый день! Список доступных команд есть в меню :)');
         }
-        if (event.postback) {
+        if (event.postback.payload == 'cinema') {
             let text = JSON.stringify(event.postback)
-            sendTextMessage(sender, "Postback received: " + text.substring(0, 200))
+            fbMessage.getAllFilms(event.sender.id);
             continue
         }
     }
