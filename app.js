@@ -98,22 +98,35 @@ app.post('/webhook/', function(req, res) {
         }
         if (event.postback) {
             let payload = event.postback.payload;
-            sendTextMessage(sender, "Postback received: " + payload)
+            generateInfo(sender, payload)
             continue
         }
     }
     res.sendStatus(200)
 })
 
+function generateInfo(senderId, payloadType) {
+    if (payloadType == 'news') {
+        fbMessage.getRandomNewsItem(event.sender.id);
+    } else if (payloadType == 'cinema') {
+        fbMessage.getAllFilms(event.sender.id);
+    } else if (payloadType == 'theatre') {
+        sendTheatreImage(event.sender.id);
+    } else if (payloadType == 'concerts') {
+        fbMessage.getAllConcerts(event.sender.id);
+    };
+};
+
+
 // Function to send simple text message
 function sendTextMessage(sender, text) {
-    let messageData = { text:text }
+    let messageData = { text: text }
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token:pageToken},
+        qs: { access_token: pageToken },
         method: 'POST',
         json: {
-            recipient: {id:sender},
+            recipient: { id: sender },
             message: messageData,
         }
     }, function(error, response, body) {
@@ -126,7 +139,7 @@ function sendTextMessage(sender, text) {
 }
 
 //Function to send image message 
-function sendTheatreImage(recipientId, message){
+function sendTheatreImage(recipientId, message) {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {
@@ -147,7 +160,7 @@ function sendTheatreImage(recipientId, message){
                 }
             }
         }
-    }, function(error, response, body){
+    }, function(error, response, body) {
         if (error) {
             console.log('Error sending message: ', error);
         } else if (response.body.error) {
@@ -157,7 +170,7 @@ function sendTheatreImage(recipientId, message){
 };
 
 
-function sendNews(recipientId, newsArray){
+function sendNews(recipientId, newsArray) {
     let randomNumber =
         request({
             url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -189,7 +202,7 @@ function sendNews(recipientId, newsArray){
                     }
                 }
             }
-        }, function(error, response, body){
+        }, function(error, response, body) {
             if (error) {
                 console.log('Error sending message: ', error);
             } else if (response.body.error) {
@@ -198,6 +211,6 @@ function sendNews(recipientId, newsArray){
         });
 }
 
-app.listen(port, function(){
+app.listen(port, function() {
     console.log('Listening on port ' + port);
 });
