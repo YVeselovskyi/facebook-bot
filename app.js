@@ -136,15 +136,9 @@ const sendTheatreImage = (recipientId, message) => {
     });
 };
 
-const randomInteger = (min, max) => {
-  let rand = min + Math.random() * (max - min)
-  rand = Math.round(rand);
-  return rand;
-}
 
 const sendNews = (recipientId, newsArray) => {
-    let randomNumber = randomInteger(0, newsArray.length-1 )
-
+    let randomNumber =
         request({
             url: 'https://graph.facebook.com/v2.6/me/messages',
             qs: {
@@ -161,13 +155,13 @@ const sendNews = (recipientId, newsArray) => {
                         payload: {
                             template_type: 'generic',
                             elements: [{
-                                title: newsArray[randomNumber].title,
-                                item_url: newsArray[randomNumber].siteUrl,
-                                image_url: newsArray[randomNumber].imageUrl,
-                                subtitle: newsArray[randomNumber].subTitle,
+                                title: newsArray[0].title,
+                                item_url: 'https://petersfancybrownhats.com',
+                                image_url: 'https://petersfancybrownhats.com/company_image.png',
+                                subtitle: 'We\'ve got the right hat for everyone.',
                                 buttons: [{
                                     type: 'web_url',
-                                    url: newsArray[randomNumber].siteUrl,
+                                    url: 'https://vk.com',
                                     title: 'Прочитать новость'
                                 }]
                             }]
