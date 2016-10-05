@@ -34,9 +34,7 @@ const fbMessage = {
         cinema.getFilms()
             .then((result) => {
                 for (let n in result) {
-                    sendMessage(recipientId, {
-                        text: `${n}: ${result[n]}`
-                    });
+                    sendTextMessage(recipientId, `${n} \n ${result[n]}`);
                 }
             })
             .catch(err => console.log(err))
@@ -45,9 +43,7 @@ const fbMessage = {
         concerts.getConcerts()
             .then((result) => {
                 for (let n in result) {
-                    sendMessage(recipientId, {
-                        text: `${n} \n ${result[n]}`
-                    });
+                    sendTextMessage(recipientId, `${n} \n ${result[n]}`);
                 }
             })
             .catch(err => console.log(err))
