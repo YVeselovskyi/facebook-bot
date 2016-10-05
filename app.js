@@ -64,12 +64,13 @@ app.post('/webhook', (req, res) => {
                 sendMessage(event.sender.id, {
                     text: "Добрый день! Список команд есть в меню слева :)"
                 });
-            }
             // if user sends postback
-        } else if (event.postback.payload == 'news') {
-            sendNews(event.sender.id, 'Test News');
-        } else if (event.postback) {
-            sendInfo(event.sender.id, event.postback.payload);
+            } else if (event.postback.payload == 'news') {
+                sendNews(event.sender.id, 'Test News');
+            } else if (event.postback) {
+                sendInfo(event.sender.id, event.postback.payload);
+            }
+
         }
     }
     res.sendStatus(200);
