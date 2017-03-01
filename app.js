@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
     res.send('Main!');
 });
 
-//Random int function 
+//Random int function
 
 function randomInteger(min, max) {
     let rand = min + Math.random() * (max - min)
@@ -117,7 +117,7 @@ function sendTextMessage(sender, text) {
     })
 }
 
-//Function to send image message 
+//Function to send image message
 function sendTheatreImage(recipientId, message) {
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
@@ -134,7 +134,7 @@ function sendTheatreImage(recipientId, message) {
                     type: 'image',
                     payload: {
                         // Image with theatre schedule for current month
-                        url: 'https://pp.vk.me/c637922/v637922167/13940/EKWTqUcJusc.jpg'
+                        url: 'https://pp.userapi.com/c638718/v638718167/26884/SF37xbWKErE.jpg'
                     }
                 }
             }
