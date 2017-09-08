@@ -28,6 +28,7 @@ function randomInteger(min, max) {
 
 // Checking if token matches with fb token
 app.get('/webhook', (req, res) => {
+    console.log(req, 'REQUEST');
     if (req.query['hub.verify_token'] === 'DynamoKyiv') {
         res.send(req.query['hub.challenge']);
     } else {
